@@ -1,0 +1,31 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: full-ci-pipeline
+spec:
+  workspaces:
+  - name: source-code
+  params:
+  - name: image
+  # - name: chat-webhook-url
+  tasks:
+  - name: clone
+    taskRef:
+      name: git-clone
+    workspaces:
+    - name: output
+      workspace: source-code
+    params:
+    - name: url
+      value: https://github.com/lbernick/web-app-demo
+  - name: build
+    taskRef:
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: source-code
+    params:
+    - name: IMAGE
+      value: $(params.image)
+    runAfter:
+    - clone

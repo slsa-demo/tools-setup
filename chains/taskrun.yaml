@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: kaniko-run-
+spec:
+  serviceAccountName: chains-sa
+  taskRef:
+    name: kaniko-chains
+  params:
+  - name: IMAGE
+    value: us-central1-docker.pkg.dev/veer-oss-pipeline/tekton-codelab/kaniko-chains
+  workspaces:
+  - name: source
+    emptyDir: {}

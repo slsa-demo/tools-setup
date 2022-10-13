@@ -1,0 +1,20 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: full-ci-pipeline-run
+spec:
+  serviceAccountName: build-robot
+  pipelineRef:
+    name: full-ci-pipeline
+  params:
+  - name: image
+    value: us-central1-docker.pkg.dev/veer-oss-pipeline/tekton-codelab/web-app-demo
+  workspaces:
+  - name: source-code
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
